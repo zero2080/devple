@@ -1,0 +1,18 @@
+spring:
+  config:
+    import: "optional:configserver:http://config:12000"
+  cloud:
+    gateway:
+      routes:
+        - id: api_server
+          uri: http://api:8081
+          predicates:
+            - Path=/api/**
+        - id: queue_server
+          uri: http://message:9999
+          predicates:
+            - Path=/message/**
+        - id: auth_server
+          uri: http://authenticate:8082
+          predicates:
+            - Path=/authenticate/**

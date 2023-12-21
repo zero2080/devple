@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    config:
+      profile: ${spring.profiles.active}
+      name: api-gateway
+      username: client
+      password: ${CONFIG_USER_SECRET}
+    gateway:
+      httpclient:
+        connect-timeout: 1000
+        response-timeout: 5s
+management:
+  endpoint:
+    gateway:
+      enabled: true
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "*"

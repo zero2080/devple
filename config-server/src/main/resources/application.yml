@@ -1,0 +1,13 @@
+server:
+  port: 12000
+spring:
+  security:
+    user:
+      name: client
+  cloud:
+    config:
+      server:
+        git:
+          default-label: main
+
+#logging.level.org.springframework.cloud: DEBUG

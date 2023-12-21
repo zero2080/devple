@@ -1,0 +1,82 @@
+services:
+  config:
+    build: 'config-server'
+    environment:
+      CONFIG_USER_SECRET: ${COMMON_SECRET}
+      CONFIG_REPO: ${CONFIG_REPO}
+    ports:
+      - '12000'
+    networks:
+      - devple-network
+  rabbitmq:
+    image: 'rabbitmq:latest'
+    ports:
+      - '5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: 'admin'
+      RABBITMQ_DEFAULT_PASS: ${ROOT_PASSWORD}
+    networks:
+      - devple-network
+  database:
+    image: 'mysql:latest'
+    environment:
+      NATIVE_MODE: 'true'
+      MYSQL_DATABASE: ${COMMON_NAME}
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+      MYSQL_USER: ${COMMON_NAME}
+      MYSQL_PASSWORD: ${COMMON_SECRET}
+    ports:
+      - '3306'
+    networks:
+      - devple-network
+  authenticate:
+    build: 'auth-server'
+    environment:
+      CONFIG_USER_SECRET: ${COMMON_SECRET}
+    depends_on:
+      - database
+      - config
+    ports:
+      - '8082'
+    networks:
+      - devple-network
+  api:
+    build: 'api-server'
+    environment:
+      CONFIG_USER_SECRET: ${COMMON_SECRET}
+    depends_on:
+      - database
+      - config
+    restart: always
+    ports:
+      - '8081'
+    networks:
+      - devple-network
+  message:
+    build: 'message-server'
+    environment:
+      RABBIT_PASSWORD: ${ROOT_PASSWORD}
+    depends_on:
+      - rabbitmq
+      - config
+    ports:
+      - '9999'
+    networks:
+      - devple-network
+  gateway:
+    build: 'api-gateway'
+    environment:
+      CONFIG_USER_SECRET: ${COMMON_SECRET}
+    depends_on:
+      - api
+      - authenticate
+      - config
+    ports:
+      - '8080:8080'
+    networks:
+      - devple-network
+
+networks:
+  devple-network:
+    driver: bridge

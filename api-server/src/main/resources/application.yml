@@ -1,0 +1,12 @@
+server.port: 8081
+spring:
+  cloud:
+    config:
+      profile: ${spring.profiles.active}
+      name: api-server
+      username: client
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+      schema-locations: classpath:/schema.sql
