@@ -5,7 +5,7 @@ services:
       CONFIG_USER_SECRET: ${COMMON_SECRET}
       CONFIG_REPO: ${CONFIG_REPO}
     ports:
-      - '12000'
+      - '8888'
     networks:
       - devple-network
   rabbitmq:

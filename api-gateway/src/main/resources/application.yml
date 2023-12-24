@@ -4,7 +4,6 @@ spring:
       profile: ${spring.profiles.active}
       name: api-gateway
       username: client
-      password: ${CONFIG_USER_SECRET}
     gateway:
       httpclient:
         connect-timeout: 1000
