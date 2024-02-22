@@ -24,7 +24,4 @@ public class BoardException extends RuntimeException implements ErrorCode {
     return errorCode;
   }
 
-  public String getMessage() {
-    return getMessage();
-  }
 }

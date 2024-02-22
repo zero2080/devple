@@ -26,22 +26,13 @@ public class Board {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Size(max = 500)
-    @NotNull
-    @Column(name = "title", nullable = false, length = 500)
     private String title;
 
-    @Size(max = 2000)
-    @NotNull
-    @Column(name = "content", nullable = false, length = 2000)
     private String content;
 
-    @NotNull
-    @Column(name = "created_at", nullable = false)
+    @Column(updatable = false)
     private Instant createdAt;
 
-    @NotNull
-    @Column(name = "writer_id", nullable = false)
     private Integer writerId;
 
     public Response toResponse() {
@@ -59,6 +50,7 @@ public class Board {
       domain.setTitle(request.getTitle());
       domain.setContent(request.getContent());
       domain.setWriterId(request.getWriterId());
+      domain.createdAt = Instant.now();
       return domain;
     }
   }
