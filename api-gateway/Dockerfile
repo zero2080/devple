@@ -1,5 +1,12 @@
+FROM gradle:8-jdk21 AS builder
+WORKDIR /app
+
+COPY . .
+
+RUN gradle bootJar
+
 FROM amazoncorretto:21 AS runner
-COPY build/libs/gateway.jar gateway.jar
+COPY --from=builder /app/build/libs/gateway.jar gateway.jar
 
 EXPOSE 8080
 

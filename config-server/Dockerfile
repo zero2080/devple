@@ -1,5 +1,14 @@
+FROM gradle:8-jdk21 AS builder
+WORKDIR /app
+
+COPY . .
+
+RUN gradle bootJar
+
 FROM amazoncorretto:21 AS runner
-COPY build/libs/config.jar config.jar
+
+WORKDIR /app
+COPY --from=builder /app/build/libs/config.jar config.jar
 
 EXPOSE 8888
 
